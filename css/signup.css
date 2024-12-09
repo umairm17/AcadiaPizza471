@@ -1,0 +1,106 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%; 
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Make the body take full viewport height */
+}
+
+main {
+    flex: 1; /* Let main fill the available vertical space */
+    display: flex; /* Make main a flex container */
+    flex-direction: column; 
+}
+
+/* Sign-up Page Styles */
+.signup-page {
+    flex: 1; /* Fill the remaining space in main */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f9f9f9;
+}
+
+.signup-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.signup-image {
+    flex: 1;
+    background-color: #fff;
+}
+
+.signup-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.signup-form {
+    flex: 1;
+    background-color: #fff;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.signup-form h1 {
+    color: #ff6600;
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+.signup-form p {
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 1.1em;
+}
+
+.signup-form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.signup-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+.signup-form button {
+    background-color: #ff6600;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.signup-form button:hover {
+    background-color: #e65c00;
+}
+
+/* Name fields container */
+.name-fields {
+    display: flex;
+    gap: 10px;
+}
+
+.name-fields input {
+    flex: 1;
+}
