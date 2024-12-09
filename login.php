@@ -27,25 +27,52 @@ if (isset($_POST['login'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    // Check if credentials match OWNER
-    $sql = "SELECT * FROM OWNER WHERE Email = ? AND Password = ?";
-    $params = array($email, $password);
+    // STEP 1: Check the OWNER table by email only
+    $sqlOwner = "SELECT * FROM OWNER WHERE Email = ?";
+    $paramsOwner = array($email);
+    $stmtOwner = sqlsrv_query($conn, $sqlOwner, $paramsOwner);
 
-    $stmt = sqlsrv_query($conn, $sql, $params);
-    if ($stmt === false) {
+    if ($stmtOwner === false) {
         die(print_r(sqlsrv_errors(), true));
     }
 
-    $owner = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+    $owner = sqlsrv_fetch_array($stmtOwner, SQLSRV_FETCH_ASSOC);
+
     if ($owner) {
-        // Valid credentials
-        header("Location: adminhome.php");
-        exit();
-    } else {
-        // Invalid credentials, redirect to the same page with an error flag
-        header("Location: login.php?error=1");
-        exit();
+        // We found a row with the given email in OWNER
+        // Now verify the password
+        if (password_verify($password, $owner['Password'])) {
+            // If the password matches the hash, redirect to adminhome.php
+            header("Location: adminhome.php");
+            exit();
+        } 
+        // If password does not match, continue to check CUSTOMER below
     }
+
+    // OWNER didn't match or password was incorrect, now check the CUSTOMER table
+    $sqlCustomer = "SELECT * FROM CUSTOMER WHERE Email = ?";
+    $paramsCustomer = array($email);
+    $stmtCustomer = sqlsrv_query($conn, $sqlCustomer, $paramsCustomer);
+
+    if ($stmtCustomer === false) {
+        die(print_r(sqlsrv_errors(), true));
+    }
+
+    $customer = sqlsrv_fetch_array($stmtCustomer, SQLSRV_FETCH_ASSOC);
+
+    if ($customer) {
+        // We found a row with the given email in CUSTOMER
+        // Now verify the password
+        if (password_verify($password, $customer['Password'])) {
+            // Password is correct, redirect to menu.php
+            header("Location: menu.php");
+            exit();
+        }
+    }
+
+    // If we reached here, it means neither OWNER nor CUSTOMER matched with a correct password
+    header("Location: login.php?error=1");
+    exit();
 }
 ?>
 
