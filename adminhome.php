@@ -1,18 +1,22 @@
 <?php
-include 'includes/gen_header.php';
+include 'includes/owner_header.php';
 ?>
 
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-
-<h1>ADMIN PAGE BAYBEEE</h1>
-    
-</body>
+<html>
+    <head>
+        <link rel="stylesheet" href="css/adminhome.css">
+    </head>
+    <body>
+        <div class="dashboard-page">
+            <div class="dashboard-container">
+                <a href="set_inventory.php" class="dashboard-item">Set Inventory</a>
+                <a href="set_employee_schedules.php" class="dashboard-item">Set Employee Schedules</a>
+                <a href="set_menu.php" class="dashboard-item">Set Menu</a>
+            </div>
+        </div>
+    </body>
 </html>
+
+<?php
+include 'includes/footer.php';
+?>

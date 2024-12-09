@@ -1,0 +1,51 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+  }
+  
+  /* Dashboard Page Container */
+  .dashboard-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
+  
+  .dashboard-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 90%;
+    max-width: 800px;
+  }
+  
+  /* Dashboard Item */
+  .dashboard-item {
+    display: block;
+    text-align: center;
+    background-color: white;
+    padding: 20px 40px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ff6600;
+    text-decoration: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .dashboard-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    background-color: #fff4e6;
+  }
+  
