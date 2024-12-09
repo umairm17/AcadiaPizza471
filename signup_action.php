@@ -1,5 +1,5 @@
 <?php
-require_once 'test.php';
+require_once './includes/test.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get form data
