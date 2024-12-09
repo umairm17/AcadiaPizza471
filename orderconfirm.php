@@ -1,6 +1,11 @@
 <?php
 include 'includes/cust_header.php';
 ?>
+<?php
+session_start();
+// Clear the order session
+unset($_SESSION['orderItems']);
+?>
 
 <html>
     <head>
