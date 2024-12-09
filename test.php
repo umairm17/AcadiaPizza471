@@ -2,8 +2,8 @@
 $serverName = "acadiapizzaserver.database.windows.net";
 $connectionOptions = [
     "Database" => "AcadiaPizzaDB",
-    "Uid" => "Umair",
-    "PWD" => "Wizzop13",
+    "Uid" => "mahin",
+    "PWD" => "Swagger21",
     "Encrypt" => true,
     "TrustServerCertificate" => false
 ];
