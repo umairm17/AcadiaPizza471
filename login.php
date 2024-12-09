@@ -1,7 +1,7 @@
 <?php
 include 'includes/gen_header.php';
 
-// Include your database connection code.
+// Include your database connection
 $serverName = "acadiapizzaserver.database.windows.net";
 $connectionOptions = [
     "Database" => "AcadiaPizzaDB",
@@ -11,25 +11,21 @@ $connectionOptions = [
     "TrustServerCertificate" => false
 ];
 $conn = sqlsrv_connect($serverName, $connectionOptions);
+
 if ($conn === false) {
     die(print_r(sqlsrv_errors(), true));
 }
 
-// Determine if we should show the alert
-$showAlert = false;
-if (isset($_GET['error']) && $_GET['error'] == '1') {
-    $showAlert = true;
-}
+// Initialize error message variable
+$errorMsg = "";
 
-// Check if form is submitted
 if (isset($_POST['login'])) {
-    // Get the email and password from the form
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    // STEP 1: Check the OWNER table by email only
-    $sqlOwner = "SELECT * FROM OWNER WHERE Email = ?";
-    $paramsOwner = array($email);
+    // 1. Check if the user is OWNER (plaintext check)
+    $sqlOwner = "SELECT * FROM OWNER WHERE Email = ? AND Password = ?";
+    $paramsOwner = array($email, $password);
     $stmtOwner = sqlsrv_query($conn, $sqlOwner, $paramsOwner);
 
     if ($stmtOwner === false) {
@@ -39,17 +35,12 @@ if (isset($_POST['login'])) {
     $owner = sqlsrv_fetch_array($stmtOwner, SQLSRV_FETCH_ASSOC);
 
     if ($owner) {
-        // We found a row with the given email in OWNER
-        // Now verify the password
-        if (password_verify($password, $owner['Password'])) {
-            // If the password matches the hash, redirect to adminhome.php
-            header("Location: adminhome.php");
-            exit();
-        } 
-        // If password does not match, continue to check CUSTOMER below
+        // OWNER found
+        header("Location: adminhome.php");
+        exit();
     }
 
-    // OWNER didn't match or password was incorrect, now check the CUSTOMER table
+    // 2. Check if the user is CUSTOMER (hashed password)
     $sqlCustomer = "SELECT * FROM CUSTOMER WHERE Email = ?";
     $paramsCustomer = array($email);
     $stmtCustomer = sqlsrv_query($conn, $sqlCustomer, $paramsCustomer);
@@ -59,20 +50,22 @@ if (isset($_POST['login'])) {
     }
 
     $customer = sqlsrv_fetch_array($stmtCustomer, SQLSRV_FETCH_ASSOC);
-
+    
     if ($customer) {
-        // We found a row with the given email in CUSTOMER
-        // Now verify the password
-        if (password_verify($password, $customer['Password'])) {
-            // Password is correct, redirect to menu.php
+        // Email found, now verify password
+        $hashedPassword = $customer['Password']; 
+        if (password_verify($password, $hashedPassword)) {
+            // Correct CUSTOMER password
             header("Location: menu.php");
             exit();
+        } else {
+            // Email found, but password didn't match
+            $errorMsg = "Invalid customer password.";
         }
+    } else {
+        // Not OWNER or CUSTOMER
+        $errorMsg = "Invalid credentials. Please try again.";
     }
-
-    // If we reached here, it means neither OWNER nor CUSTOMER matched with a correct password
-    header("Location: login.php?error=1");
-    exit();
 }
 ?>
 
@@ -99,9 +92,9 @@ if (isset($_POST['login'])) {
                         
                         <button type="submit" name="login">Get Started</button>
 
-                        <?php if ($showAlert): ?>
+                        <?php if (!empty($errorMsg)): ?>
                         <div class="alert alert-danger">
-                            Invalid credentials. Please try again.
+                            <?php echo htmlspecialchars($errorMsg); ?>
                         </div>
                         <?php endif; ?>
                     </form>
