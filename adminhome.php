@@ -10,8 +10,9 @@ include 'includes/owner_header.php';
         <div class="dashboard-page">
             <div class="dashboard-container">
                 <a href="set_inventory.php" class="dashboard-item">Set Inventory</a>
-                <a href="set_employee_schedules.php" class="dashboard-item">Set Employee Schedules</a>
                 <a href="set_menu.php" class="dashboard-item">Set Menu</a>
+                <a href="setschedule.php" class="dashboard-item">Set Employee Schedules</a>
+                <a href="addemployee.php" class="dashboard-item">Add Employee</a>
             </div>
         </div>
     </body>

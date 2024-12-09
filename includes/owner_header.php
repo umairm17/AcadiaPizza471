@@ -62,7 +62,7 @@
 <body>
     <header class="header">
       <div class="header-left">
-        <h2>Welcome, Cutty Flam</h2>
+        <h2>Welcome</h2>
       </div>
       <div class="logo">
         <span>🍕</span>
