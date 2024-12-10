@@ -1,4 +1,9 @@
 <?php
+session_start();
+if (!isset($_SESSION['customer_id'])) {
+    header('Location: login.php');
+    exit();
+}
 include 'includes/cust_header.php';
 ?>
 
@@ -190,6 +195,7 @@ include 'includes/cust_header.php';
         let orderItems = [];
 
         document.addEventListener('DOMContentLoaded', function() {
+            const customerID = <?php echo $_SESSION['customer_id']; ?>;
             const menuItems = document.querySelectorAll('.menu-item');
             
             menuItems.forEach(item => {
