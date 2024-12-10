@@ -2,7 +2,6 @@
 require_once './includes/test.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Get form data
     $firstName = $_POST['first_name'];
     $lastName = $_POST['last_name'];
     $email = $_POST['email'];
@@ -12,7 +11,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "INSERT INTO CUSTOMER (FirstName, LastName, Email, Password, PhoneNumber) 
             VALUES (?, ?, ?, ?, ?)";
     
-    // Create parameterized query
     $params = array($firstName, $lastName, $email, $password, $phone);
     $stmt = sqlsrv_prepare($conn, $sql, $params);
 

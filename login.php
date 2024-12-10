@@ -2,7 +2,6 @@
 session_start();
 include 'includes/gen_header.php';
 
-// Include your database connection
 $serverName = "acadiapizzaserver.database.windows.net";
 $connectionOptions = [
     "Database" => "AcadiaPizzaDB",
@@ -17,14 +16,12 @@ if ($conn === false) {
     die(print_r(sqlsrv_errors(), true));
 }
 
-// Initialize error message variable
 $errorMsg = "";
 
 if (isset($_POST['login'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    // 1. Check if the user is OWNER (plaintext check)
     $sqlOwner = "SELECT * FROM OWNER WHERE Email = ? AND Password = ?";
     $paramsOwner = array($email, $password);
     $stmtOwner = sqlsrv_query($conn, $sqlOwner, $paramsOwner);
@@ -36,12 +33,10 @@ if (isset($_POST['login'])) {
     $owner = sqlsrv_fetch_array($stmtOwner, SQLSRV_FETCH_ASSOC);
 
     if ($owner) {
-        // OWNER found
         header("Location: adminhome.php");
         exit();
     }
 
-    // 2. Check if the user is CUSTOMER (hashed password)
     $sqlCustomer = "SELECT * FROM CUSTOMER WHERE Email = ?";
     $paramsCustomer = array($email);
     $stmtCustomer = sqlsrv_query($conn, $sqlCustomer, $paramsCustomer);
@@ -53,7 +48,6 @@ if (isset($_POST['login'])) {
     $customer = sqlsrv_fetch_array($stmtCustomer, SQLSRV_FETCH_ASSOC);
 
     if ($customer) {
-        // Email found, now verify password
         $hashedPassword = $customer['Password'];
         if (password_verify($password, $hashedPassword)) {
             $_SESSION['customer_id'] = $customer['Customer_ID'];
@@ -63,7 +57,6 @@ if (isset($_POST['login'])) {
             $errorMsg = "Invalid customer password. Please try again.";
         }
     } else {
-        // 3. Check if the user is EMPLOYEE (hashed password)
         $sqlEmployee = "SELECT * FROM EMPLOYEE WHERE email = ?";
         $paramsEmployee = array($email);
         $stmtEmployee = sqlsrv_query($conn, $sqlEmployee, $paramsEmployee);
@@ -75,18 +68,14 @@ if (isset($_POST['login'])) {
         $employee = sqlsrv_fetch_array($stmtEmployee, SQLSRV_FETCH_ASSOC);
 
         if ($employee) {
-            // Email found, now verify password
             $hashedPassword = $employee['password'];
             if (password_verify($password, $hashedPassword)) {
-                // Correct EMPLOYEE password
                 header("Location: employeehome.php");
                 exit();
             } else {
-                // Email found, but password didn't match
                 $errorMsg = "Invalid employee password.";
             }
         } else {
-            // Not OWNER, CUSTOMER, or EMPLOYEE
             $errorMsg = "Invalid credentials. Please try again.";
         }
     }
