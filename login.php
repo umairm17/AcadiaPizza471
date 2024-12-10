@@ -51,10 +51,10 @@ if (isset($_POST['login'])) {
     }
 
     $customer = sqlsrv_fetch_array($stmtCustomer, SQLSRV_FETCH_ASSOC);
-    
+
     if ($customer) {
         // Email found, now verify password
-        $hashedPassword = $customer['Password']; 
+        $hashedPassword = $customer['Password'];
         if (password_verify($password, $hashedPassword)) {
             $_SESSION['customer_id'] = $customer['Customer_ID'];
             header("Location: menu.php");
@@ -63,8 +63,32 @@ if (isset($_POST['login'])) {
             $errorMsg = "Invalid customer password. Please try again.";
         }
     } else {
-        // Not OWNER or CUSTOMER
-        $errorMsg = "Invalid credentials. Please try again.";
+        // 3. Check if the user is EMPLOYEE (hashed password)
+        $sqlEmployee = "SELECT * FROM EMPLOYEE WHERE email = ?";
+        $paramsEmployee = array($email);
+        $stmtEmployee = sqlsrv_query($conn, $sqlEmployee, $paramsEmployee);
+
+        if ($stmtEmployee === false) {
+            die(print_r(sqlsrv_errors(), true));
+        }
+
+        $employee = sqlsrv_fetch_array($stmtEmployee, SQLSRV_FETCH_ASSOC);
+
+        if ($employee) {
+            // Email found, now verify password
+            $hashedPassword = $employee['password'];
+            if (password_verify($password, $hashedPassword)) {
+                // Correct EMPLOYEE password
+                header("Location: employeehome.php");
+                exit();
+            } else {
+                // Email found, but password didn't match
+                $errorMsg = "Invalid employee password.";
+            }
+        } else {
+            // Not OWNER, CUSTOMER, or EMPLOYEE
+            $errorMsg = "Invalid credentials. Please try again.";
+        }
     }
 }
 ?>
