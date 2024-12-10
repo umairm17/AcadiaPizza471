@@ -16,7 +16,6 @@ include './includes/cust_header.php';
         <body>
             <div class="checkout-page">
                 <div class="checkout-container">
-                    <!-- Checkout Form Section -->
                     <div class="checkout-form">
                         <h1>Checkout</h1>
                         <form action="processpayment.php" method="POST">
@@ -41,8 +40,7 @@ include './includes/cust_header.php';
                             <div class="coupon-input">
                                 <input type="text" id="coupon" name="coupon" placeholder="Enter coupon code">
                                 <button type="button" class="apply-btn">Apply</button>
-                            </div>
-                            
+                            </div>        
                             <input type="hidden" name="total_amount" id="total_amount">
                             <input type="hidden" name="orderItems" id="orderItems">
                             <button type="submit" class="pay-btn">Pay</button>
@@ -55,12 +53,10 @@ include './includes/cust_header.php';
                         });
                     </script>
                     
-                    <!-- Order Summary Section -->
                     <div class="checkout-summary">
                         <h2>Your total is</h2>
                         <h3 id="total-display">$0.00</h3>
                         <div id="order-summary" class="order-summary">
-                            <!-- Items will be dynamically populated -->
                         </div>
                     </div>
                 </div>
@@ -68,13 +64,11 @@ include './includes/cust_header.php';
 
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
-                    // Get order items from sessionStorage
                     const orderItems = JSON.parse(sessionStorage.getItem('orderItems')) || [];
                     const summaryDiv = document.getElementById('order-summary');
                     const totalDisplay = document.getElementById('total-display');
                     let subtotal = 0;
 
-                    // Display each ordered item
                     orderItems.forEach(item => {
                         const itemTotal = item.price * item.quantity;
                         subtotal += itemTotal;
@@ -84,11 +78,9 @@ include './includes/cust_header.php';
                         `;
                     });
 
-                    // Calculate and display tax and total
                     const tax = subtotal * 0.05;
                     const total = subtotal + tax;
 
-                    // Add tax and total to summary
                     summaryDiv.innerHTML += `
                         <p>Subtotal <span>$${subtotal.toFixed(2)}</span></p>
                         <hr>
@@ -97,7 +89,6 @@ include './includes/cust_header.php';
                         <p><strong>Total</strong> <span><strong>$${total.toFixed(2)}</strong></span></p>
                     `;
 
-                    // Update the total display at the top
                     totalDisplay.textContent = `$${total.toFixed(2)}`;
                 });
             </script>
