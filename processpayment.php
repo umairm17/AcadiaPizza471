@@ -21,9 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     if ($stmt) {
         $result = sqlsrv_query($conn, "SELECT SCOPE_IDENTITY() as order_id");
-        if ($result === false) {
-            die(print_r(sqlsrv_errors(), true));
-        }
         $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
         $order_ID = $row['order_id'];
         
