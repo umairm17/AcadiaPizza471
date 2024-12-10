@@ -15,23 +15,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $total_price = $total_price * 1.05; // 5% tax
     
     // Insert into ORDER table
-    $sql = "INSERT INTO ORDER (customer_ID, totalPrice) VALUES (?, ?)";
+    $sql = "INSERT INTO [ORDER] (customer_ID, totalPrice) VALUES (?, ?)";
     $params = array($customer_id, $total_price);
     $stmt = sqlsrv_query($conn, $sql, $params);
     
     if ($stmt) {
-        $result = sqlsrv_query($conn, "SELECT SCOPE_IDENTITY()");
-        $row = sqlsrv_fetch_array($result);
-        $order_ID = $row[0];
+        $result = sqlsrv_query($conn, "SELECT SCOPE_IDENTITY() as order_id");
+        if ($result === false) {
+            die(print_r(sqlsrv_errors(), true));
+        }
+        $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
+        $order_ID = $row['order_id'];
         
         foreach ($orderItems as $item) {
             $sql = "INSERT INTO ORDER_ITEMS (order_ID, menuitem_ID, quantity, itemPrice) 
-                   VALUES (?, (SELECT menuitem_id FROM MENUITEMS WHERE itemname = ?), ?, ?)";
-            $params = array($order_ID, $item['name'], $item['quantity'], $item['price']);
-            sqlsrv_query($conn, $sql, $params);
+                   SELECT ?, menuitem_id, ?, ?
+                   FROM MENUITEM 
+                   WHERE itemname = ?";
+            $params = array($order_ID, $item['quantity'], $item['price'], $item['name']);
+            $itemStmt = sqlsrv_query($conn, $sql, $params);
         }
-        
         header('Location: orderconfirm.php');
+        exit();
     }
 }
 ?>
