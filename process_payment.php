@@ -12,7 +12,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $total_price += $item['price'] * $item['quantity'];
     }
     
-    // Add tax
     $total_price = $total_price * 1.05; // 5% tax
     
     // Insert into ORDER table
@@ -21,12 +20,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = sqlsrv_query($conn, $sql, $params);
     
     if ($stmt) {
-        // Get the last inserted ID
         $result = sqlsrv_query($conn, "SELECT SCOPE_IDENTITY()");
         $row = sqlsrv_fetch_array($result);
         $order_ID = $row[0];
         
-        // Insert order items
         foreach ($orderItems as $item) {
             $sql = "INSERT INTO ORDER_ITEMS (order_ID, menuitem_ID, quantity, itemPrice) 
                    VALUES (?, (SELECT menuitem_id FROM MENUITEMS WHERE itemname = ?), ?, ?)";
@@ -34,7 +31,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             sqlsrv_query($conn, $sql, $params);
         }
         
-        // Redirect to confirmation page
         header('Location: orderconfirm.php');
     }
 }
