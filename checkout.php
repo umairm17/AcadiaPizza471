@@ -1,5 +1,12 @@
 <?php
-include 'includes/cust_header.php';
+session_start();
+
+if (!isset($_SESSION['customer_id'])) {
+    header('Location: login.php');
+    exit();
+}
+
+include './includes/cust_header.php';
 ?>
 
     <html>
@@ -37,9 +44,16 @@ include 'includes/cust_header.php';
                             </div>
                             
                             <input type="hidden" name="total_amount" id="total_amount">
+                            <input type="hidden" name="orderItems" id="orderItems">
                             <button type="submit" class="pay-btn">Pay</button>
                         </form>
                     </div>
+
+                    <script>
+                        document.querySelector('form').addEventListener('submit', function(e) {
+                            document.getElementById('orderItems').value = sessionStorage.getItem('orderItems');
+                        });
+                    </script>
                     
                     <!-- Order Summary Section -->
                     <div class="checkout-summary">

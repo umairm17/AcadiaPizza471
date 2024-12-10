@@ -1,4 +1,5 @@
 <?php
+session_start();
 include 'includes/gen_header.php';
 
 // Include your database connection
@@ -55,12 +56,11 @@ if (isset($_POST['login'])) {
         // Email found, now verify password
         $hashedPassword = $customer['Password']; 
         if (password_verify($password, $hashedPassword)) {
-            // Correct CUSTOMER password
+            $_SESSION['customer_id'] = $customer['Customer_ID'];
             header("Location: menu.php");
             exit();
         } else {
-            // Email found, but password didn't match
-            $errorMsg = "Invalid customer password.";
+            $errorMsg = "Invalid customer password. Please try again.";
         }
     } else {
         // Not OWNER or CUSTOMER
