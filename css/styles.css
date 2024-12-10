@@ -4,8 +4,6 @@ html{
     font-family: Arial, sans-serif;
 }
 
-/* Header and Footer*/
-
 .footer {
     background: #333;
     color: white;
@@ -23,7 +21,7 @@ html{
     padding: 2rem;
 }
 
-/* Header styles */
+
 .header {
     display: flex;
     justify-content: space-between;
@@ -72,20 +70,16 @@ cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* White button hover effect */
 .header nav button.secondary:hover {
     background-color: #f2f2f2; 
     color: #333;
 }
-
-/* Orange button hover effect */
 
 .header nav button:hover {
     background-color: #ff7a42; 
     color: white;
 }
 
-/* Hero "View Menu" button hover effect */
 .hero button:hover {
     background-color: #ff7a42;
     color: #fff; 
@@ -111,7 +105,6 @@ main {
     flex-direction: column;
     }
 
-/* Hero section */
 .hero {
     flex: 1;
     position: relative;
@@ -163,7 +156,6 @@ main {
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* Food gallery */
 .gallery {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));

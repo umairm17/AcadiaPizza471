@@ -1,7 +1,7 @@
 <?php
 include 'includes/emp_header.php';
 
-// Database connection
+// Connected to our database
 $serverName = "acadiapizzaserver.database.windows.net";
 $connectionOptions = [
     "Database" => "AcadiaPizzaDB",
@@ -16,7 +16,6 @@ if ($conn === false) {
     die(print_r(sqlsrv_errors(), true));
 }
 
-// Fetch employees for the dropdown
 $sql_employees = "SELECT firstname, lastname, employee_id FROM EMPLOYEE";
 $stmt_employees = sqlsrv_query($conn, $sql_employees);
 
@@ -24,7 +23,6 @@ if ($stmt_employees === false) {
     die(print_r(sqlsrv_errors(), true));
 }
 
-// Fetch schedule for a specific employee (default is no schedule)
 $schedule = [];
 if (isset($_POST['employee_id']) && !empty($_POST['employee_id'])) {
     $selected_employee_id = $_POST['employee_id'];
@@ -44,7 +42,6 @@ if (isset($_POST['employee_id']) && !empty($_POST['employee_id'])) {
     }
 }
 
-// Default days of the week
 $daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 ?>
 
@@ -54,7 +51,6 @@ $daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
 </head>
 <body>
     <div class="schedule-page">
-        <!-- Employee Selection Dropdown -->
         <form action="" method="POST" class="employee-dropdown">
             <select name="employee_id" id="employee_id" onchange="this.form.submit()">
                 <option value="">Select an Employee (ID)</option>
@@ -68,11 +64,7 @@ $daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
                 ?>
             </select>
         </form>
-
-        <!-- Set Schedule Heading -->
         <h1>Employee Schedules</h1>
-
-        <!-- Schedule Table -->
         <div class="schedule-table">
             <?php
             foreach ($daysOfWeek as $day) {
