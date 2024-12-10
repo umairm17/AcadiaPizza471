@@ -3,61 +3,67 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-  }
-  
-  body {
+}
+
+body {
     font-family: Arial, sans-serif;
     background-color: #f9f9f9;
     color: #333;
-  }
-  
-  /* Schedule Page Container */
-  .schedule-page {
+}
+
+/* Schedule Page Container */
+.schedule-page {
     flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
     gap: 20px;
-  }
-  
-  /* Set Schedule Heading */
-  h1 {
-    font-size: 2rem;
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
-  /* Week Navigation */
-  .week-nav {
+}
+
+/* Dropdown Section */
+.employee-dropdown {
     display: flex;
+    flex-direction: column;
     align-items: center;
     gap: 10px;
-  }
-  
-  .nav-arrow {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 50%;
-    padding: 5px 10px;
-    cursor: pointer;
-  }
-  
-  .week-display {
-    font-size: 1.2rem;
+    width: 100%;
+    max-width: 400px;
+}
+
+.employee-dropdown label {
+    font-size: 1rem;
     font-weight: bold;
-  }
-  
-  /* Schedule Table */
-  .schedule-table {
+    margin-bottom: 5px;
+}
+
+.employee-dropdown select {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+/* Schedule Header */
+h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Schedule Table */
+.schedule-table {
     display: flex;
     flex-direction: column;
     gap: 10px;
     width: 100%;
     max-width: 600px;
-  }
-  
-  .day-row {
+}
+
+.day-row {
     display: flex;
     justify-content: space-between;
     padding: 10px 20px;
@@ -65,28 +71,14 @@
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 1rem;
-  }
-  
-  .punch-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 20px;
 }
 
-.punch-in-button, .punch-out-button {
-    background-color: #ff6600;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 1.2rem;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+.day-row span:first-child {
+    font-weight: bold;
+    color: #333;
 }
 
-.punch-in-button:hover, .punch-out-button:hover {
-    background-color: #e65c00;
+.day-row span:last-child {
+    font-size: 1rem;
+    color: #666;
 }
-
-  
