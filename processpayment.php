@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $total_price = $total_price * 1.05; // 5% tax
     
     // Insert into ORDER table
-    $sql = "INSERT INTO [ORDER] (customer_ID, totalPrice) VALUES (?, ?)";
+    $sql = "INSERT INTO ORDER (customer_ID, totalPrice) VALUES (?, ?)";
     $params = array($customer_id, $total_price);
     $stmt = sqlsrv_query($conn, $sql, $params);
     

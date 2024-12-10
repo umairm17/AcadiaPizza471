@@ -14,7 +14,7 @@ include 'includes/gen_header.php';
                 <div class="signup-form">
                     <h1>Join Us!</h1>
                     <p>Enter Your Details To Continue</p>
-                    <form action="signup_action.php" method="POST">
+                    <form action="signupaction.php" method="POST">
                         <label for="first_name">What should we call you?</label>
                         <div class="name-fields">
                             <input type="text" id="first_name" name="first_name" placeholder="First Name" required>

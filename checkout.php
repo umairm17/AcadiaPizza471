@@ -19,7 +19,7 @@ include './includes/cust_header.php';
                     <!-- Checkout Form Section -->
                     <div class="checkout-form">
                         <h1>Checkout</h1>
-                        <form action="process_payment.php" method="POST">
+                        <form action="processpayment.php" method="POST">
                             <label for="cardholder-name">Cardholder's Name</label>
                             <input type="text" id="cardholder-name" name="cardholder-name" placeholder="Enter your name" required>
                             
