@@ -37,6 +37,7 @@ html{
 display: flex;
 align-items: center;
 gap: 8px;
+font-size: 20px;
 }
 
 .header h2 {
@@ -132,7 +133,7 @@ main {
     left: 50%;
     width: 100%;
     height: auto;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -39%);
     z-index: -1;
   }
 

@@ -57,25 +57,51 @@
     .dropdown:focus-within .dropdown-menu {
       display: block;
     }
+
+    /* Logo Styles */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px; /* Space between the pizza icon and text */
+    }
+
+    .logo a {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .logo span {
+      font-size: 20px; /* Adjust icon size */
+      transform: translateY(-3px);
+    }
+
+    .logo h2 {
+      font-size: 20px; /* Adjust text size */
+      margin: 0; /* Remove default margin */
+    }
     </style>
 </head>
 <body>
     <header class="header">
-      <div class="header-left">
-        <h2>Welcome</h2>
-      </div>
-      <div class="logo">
-        <span>🍕</span>
-        <h2>Acadia Pizza</h2>
-      </div>
-      <nav>
-        <div class="dropdown">
-          <span class="dropdown-title" tabindex="0">My Profile</span>
-          <div class="dropdown-menu">
-            <a href="index.php">Log Out</a>
-          </div>
+        <div class="header-left">
+            <h2>Welcome</h2>
         </div>
-      </nav>
+        <div class="logo">
+            <a href="adminhome.php">
+                <span>🍕</span>
+                <h2>Acadia Pizza</h2>
+            </a>
+        </div>
+        <nav>
+            <div class="dropdown">
+                <span class="dropdown-title" tabindex="0">My Profile</span>
+                <div class="dropdown-menu">
+                    <a href="index.php">Log Out</a>
+                </div>
+            </div>
+        </nav>
     </header>
 </body>
 </html>
