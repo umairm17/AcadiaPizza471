@@ -1,6 +1,11 @@
 <?php
 include 'includes/owner_header.php';
 
+// Success msg 
+$success = isset($_GET['success']) && $_GET['success'] == '1';
+
+// Connect to our database server
+
 $serverName = "acadiapizzaserver.database.windows.net";
 $connectionOptions = [
     "Database" => "AcadiaPizzaDB",
@@ -15,12 +20,21 @@ if ($conn === false) {
     die(print_r(sqlsrv_errors(), true));
 }
 
+// SQL query for fetching employees
 $sql = "SELECT firstname, lastname, employee_id FROM EMPLOYEE";
 $stmt = sqlsrv_query($conn, $sql);
 
 if ($stmt === false) {
+    echo "<p>query not fetched</p>";
     die(print_r(sqlsrv_errors(), true));
 }
+
+// debug line - remove later
+//echo "<pre>";
+//while ($debugRow = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+//    print_r($debugRow);
+//}
+
 ?>
 
 <html>
@@ -29,53 +43,51 @@ if ($stmt === false) {
 </head>
 <body>
     <div class="schedule-page">
-        <div class="employee-dropdown">
-            <button class="employee-dropdown-button">Employee Name (ID) <span>▼</span></button>
-            <div class="employee-dropdown-menu">
+    <!-- Checks if schedule has been updated -->
+    <?php if ($success): ?>
+        <div class="success-message">
+            <p>Schedule successfully updated!</p>
+        </div>
+    <?php endif; ?>
+        <form action="updatesetschedule.php" method="POST">
+            <div class="employee-dropdown">
+                <label for="employee_id">Select Employee:</label>
+                <select name="employee_id" id="employee_id" required>
+                    <option value="">Select an Employee (ID)</option>
+                    <?php
+                    // show the employee names & id in dropdown and fetch them
+                    while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+                        $firstName = htmlspecialchars($row['firstname']);
+                        $lastName = htmlspecialchars($row['lastname']);
+                        $employeeID = htmlspecialchars($row['employee_id']);
+                        
+                        echo "<option value='{$employeeID}'>{$firstName} {$lastName} ({$employeeID})</option>";
+                    }
+                    ?>
+                </select>
+            </div>
+            <h1>Set Schedule</h1>
+            <div class="schedule-form">
                 <?php
-                while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
-                    $employeeName = htmlspecialchars($row['firstname'] . ' ' . $row['lastname']);
-                    $employeeID = htmlspecialchars($row['employee_id']);
-                    echo "<a href='#'>{$employeeName} ({$employeeID})</a>";
+                // Create array of weekdays for the schedule & loop through them for the schedule inputs
+                $scheduleDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                foreach ($scheduleDays as $day) {
+                    echo "
+                    <div class='day-row'>
+                        <label for='{$day}_start'>{$day}:</label>
+                        <input type='time' id='{$day}_start' name='{$day}_start' placeholder='Start Time'>
+                        <input type='time' id='{$day}_end' name='{$day}_end' placeholder='End Time'>
+                        <label>
+                            <input type='checkbox' name='{$day}_off'> Off
+                        </label>
+                    </div>";
                 }
                 ?>
             </div>
-        </div>
-        <h1>Set Schedule</h1>
-        <div class="week-nav">
-            <button class="nav-arrow">←</button>
-            <span class="week-display">Jan 01 - Jan 07</span>
-            <button class="nav-arrow">→</button>
-        </div>
-        <div class="schedule-table">
-            <div class="day-row"><span>Sunday</span><span>4pm-10pm</span></div>
-            <div class="day-row"><span>Monday</span><span>10am-2pm</span></div>
-            <div class="day-row"><span>Tuesday</span><span>No Shift</span></div>
-            <div class="day-row"><span>Wednesday</span><span>6pm-10pm</span></div>
-            <div class="day-row"><span>Thursday</span><span>No Shift</span></div>
-            <div class="day-row"><span>Friday</span><span>3pm-10pm</span></div>
-            <div class="day-row"><span>Saturday</span><span>No Shift</span></div>
-        </div>
-        <button class="edit-button">Edit</button>
+            <button type="submit" class="save-button">Save Schedule</button>
+        </form>
     </div>
 </body>
-<script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const employeeDropdownButton = document.querySelector(".employee-dropdown-button");
-            const employeeDropdownMenu = document.querySelector(".employee-dropdown-menu");
-
-            employeeDropdownButton.addEventListener("click", function (event) {
-                event.stopPropagation(); 
-                employeeDropdownMenu.classList.toggle("show");
-            });
-
-            document.addEventListener("click", function (event) {
-                if (!employeeDropdownMenu.contains(event.target) && !employeeDropdownButton.contains(event.target)) {
-                    employeeDropdownMenu.classList.remove("show");
-                }
-            });
-        });
-    </script>
 </html>
 
 <?php
